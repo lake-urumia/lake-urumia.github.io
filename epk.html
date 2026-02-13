@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EPK – Lake Urumia</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* EPK-specific styles */
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    
+    .login-form {
+      text-align: center;
+      max-width: 300px;
+    }
+    
+    .login-form h2 {
+      margin-bottom: 2rem;
+    }
+    
+    .login-form h2::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    .login-form input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      transition: border-color var(--transition-fast);
+    }
+    
+    .login-form input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    
+    .login-form input::placeholder {
+      color: var(--text-muted);
+    }
+    
+    .login-form button {
+      padding: 0.875rem 2.5rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    
+    .login-form button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-glow);
+    }
+    
+    .login-error {
+      color: var(--berber-rust);
+      font-size: 0.8rem;
+      margin-top: 1rem;
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+    }
+    
+    .login-error.show {
+      opacity: 1;
+    }
+    
+    /* Protected content */
+    .protected {
+      display: none;
+    }
+    
+    .protected.visible {
+      display: block;
+    }
+    
+    .epk-header {
+      padding: 6rem 0 3rem;
+      text-align: center;
+    }
+    
+    .epk-header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .back-link {
+      display: inline-block;
+      margin-bottom: 2rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
+    
+    .epk-section {
+      padding: 3rem 0;
+      border-top: 1px solid var(--border);
+    }
+    
+    .epk-section h3 {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      letter-spacing: 0.1em;
+    }
+    
+    .bio-long {
+      max-width: 65ch;
+      color: var(--text-secondary);
+    }
+    
+    .bio-long p:first-child {
+      color: var(--text-primary);
+    }
+    
+    .download-list {
+      list-style: none;
+    }
+    
+    .download-list li {
+      margin-bottom: 1rem;
+    }
+    
+    .download-list a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1.25rem;
+      border: 1px solid var(--border);
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      transition: all var(--transition-fast);
+    }
+    
+    .download-list a:hover {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
+    
+    .download-list .file-size {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+    
+    .press-quotes {
+      list-style: none;
+    }
+    
+    .press-quotes li {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .press-quotes blockquote {
+      color: var(--text-primary);
+      font-style: italic;
+      margin-bottom: 0.5rem;
+    }
+    
+    .press-quotes cite {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-style: normal;
+    }
+    
+    .tech-specs {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.5rem 2rem;
+      font-size: 0.9rem;
+    }
+    
+    .tech-specs dt {
+      color: var(--text-muted);
+    }
+    
+    .tech-specs dd {
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-layer"></div>
+  <div class="noise-layer"></div>
+  
+  <!-- Login Form -->
+  <div class="login-container" id="loginContainer">
+    <div class="login-form">
+      <h2>press kit</h2>
+      <form onsubmit="checkPassword(event)">
+        <input type="password" id="password" placeholder="password" autocomplete="off">
+        <button type="submit">enter</button>
+      </form>
+      <p class="login-error" id="loginError">incorrect password</p>
+    </div>
+  </div>
+  
+  <!-- Protected Content -->
+  <div class="protected" id="epkContent">
+    <main>
+      <div class="epk-header">
+        <a href="index.html" class="back-link">← back to site</a>
+        <h1>Electronic Press Kit</h1>
+        <p class="tagline">Lake Urumia</p>
+      </div>
+      
+      <div class="section-inner">
+        <!-- Bio -->
+        <div class="epk-section">
+          <h3>biography</h3>
+          <div class="bio-long">
+            <p>Lake Urumia is an experimental musician and multimedia artist based in Graz, Austria. Working across sound art, video, photography, and text, the practice explores ecological temporalities and the aesthetics of decay through frameworks like "Messy Sensing" – an approach to time-based media that embraces noise, error, and environmental interference as compositional elements.</p>
+            <p>Over eight years of collaboration with Austrian cultural institutions including Forum Stadtpark, Elevate Festival, and Steirischer Herbst have shaped a body of work that sits at the intersection of drone, noise, and environmental observation. As part of an artist duo focused on transdisciplinary practice, Lake Urumia develops performances, installations, and recordings that investigate the boundaries between signal and noise, presence and absence.</p>
+            <p>Recent work has focused on urban microclimate monitoring and the sonification of environmental data, drawing connections between ecological sensing and experimental sound practice.</p>
+          </div>
+        </div>
+        
+        <!-- Downloads -->
+        <div class="epk-section">
+          <h3>downloads</h3>
+          <ul class="download-list">
+            <li>
+              <a href="assets/lake-urumia-press-photos.zip" download>
+                Press Photos (High-res)
+                <span class="file-size">ZIP, ~15MB</span>
+              </a>
+            </li>
+            <li>
+              <a href="assets/lake-urumia-logo.zip" download>
+                Logo Pack
+                <span class="file-size">ZIP, ~2MB</span>
+              </a>
+            </li>
+            <li>
+              <a href="assets/lake-urumia-rider.pdf" download>
+                Technical Rider
+                <span class="file-size">PDF, ~500KB</span>
+              </a>
+            </li>
+            <li>
+              <a href="assets/lake-urumia-bio.txt" download>
+                Bio (plain text)
+                <span class="file-size">TXT, ~2KB</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Press Quotes -->
+        <div class="epk-section">
+          <h3>press</h3>
+          <ul class="press-quotes">
+            <li>
+              <blockquote>"A masterful exploration of decay and regeneration..."</blockquote>
+              <cite>— Publication Name, 2024</cite>
+            </li>
+            <li>
+              <blockquote>"Lake Urumia transforms environmental noise into something approaching the sublime."</blockquote>
+              <cite>— Another Publication, 2023</cite>
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Technical Requirements -->
+        <div class="epk-section">
+          <h3>technical requirements</h3>
+          <dl class="tech-specs">
+            <dt>Sound</dt>
+            <dd>Stereo PA, 2x DI boxes, monitor</dd>
+            <dt>Visual</dt>
+            <dd>Projector (min 3000 lumens), HDMI input</dd>
+            <dt>Space</dt>
+            <dd>Table (min 1m), power strip (3+ outlets)</dd>
+            <dt>Setup time</dt>
+            <dd>30–45 minutes</dd>
+            <dt>Set length</dt>
+            <dd>20–45 minutes (flexible)</dd>
+          </dl>
+        </div>
+        
+        <!-- Contact -->
+        <div class="epk-section">
+          <h3>booking & inquiries</h3>
+          <p id="epk-email"></p>
+        </div>
+      </div>
+    </main>
+    
+    <footer>
+      <div class="berber-border"></div>
+      <p>© 2025 Lake Urumia</p>
+    </footer>
+  </div>
+  
+  <script>
+    // Simple password check
+    // NOTE: This is NOT secure - it's just to deter casual visitors
+    // The password is visible if someone views page source
+    function checkPassword(e) {
+      e.preventDefault();
+      const input = document.getElementById('password').value;
+      
+      // Change 'presskit2025' to your actual password
+      // btoa('presskit2025') = 'cHJlc3NraXQyMDI1'
+      if (btoa(input) === 'cHJlc3NraXQyMDI1') {
+        document.getElementById('loginContainer').style.display = 'none';
+        document.getElementById('epkContent').classList.add('visible');
+        sessionStorage.setItem('epk_access', '1');
+        initEpkEmail();
+      } else {
+        document.getElementById('loginError').classList.add('show');
+        document.getElementById('password').value = '';
+      }
+    }
+    
+    // Check if already authenticated this session
+    if (sessionStorage.getItem('epk_access')) {
+      document.getElementById('loginContainer').style.display = 'none';
+      document.getElementById('epkContent').classList.add('visible');
+      initEpkEmail();
+    }
+    
+    // Obfuscated email for EPK
+    function initEpkEmail() {
+      const target = document.getElementById('epk-email');
+      if (!target || target.innerHTML) return;
+      
+      const user = 'booking';
+      const domain = 'lakeurumia';
+      const tld = 'at';
+      const email = `${user}@${domain}.${tld}`;
+      
+      target.innerHTML = `<a href="mailto:${email}">${email}</a>`;
+    }
+    
+    // Theme handling
+    const saved = localStorage.getItem('theme');
+    if (saved) {
+      document.documentElement.setAttribute('data-theme', saved);
+    } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  </script>
+</body>
+</html>
