@@ -30,9 +30,9 @@ function initEmail() {
   if (!target) return;
   
   // Split your email into parts
-  const user = 'booking';
-  const domain = 'lakeurumia';
-  const tld = 'at';
+  const user = 'booking.unison333';
+  const domain = 'passfwd';
+  const tld = 'com';
   
   // Assemble
   const email = `${user}@${domain}.${tld}`;
