@@ -458,7 +458,7 @@ section {
   font-weight: 400;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   margin: 1.5rem 0 0.5rem;
 }
 
@@ -486,7 +486,7 @@ section {
 
 .gig-location {
   font-size: 0.85rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-align: right;
 }
 
