@@ -228,7 +228,7 @@ nav a {
   font-size: 0.8rem;
   letter-spacing: 0.1em;
   text-transform: lowercase;
-  color: var(--text-muted);
+  color: var(--text-primary);
   position: relative;
 }
 
@@ -683,8 +683,8 @@ html {
   right: 1.5rem;
   z-index: 100;
   background: var(--bg-surface);
-  border: 1px solid var(--border);
-  color: var(--text-muted);
+  border: 3px solid var(--berber-sand);
+  color: var(--text-primary);
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
