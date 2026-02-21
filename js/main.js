@@ -87,7 +87,7 @@ function initAudio() {
   const toggle = document.getElementById('audio-toggle');
   if (!audio || !toggle) return;
 
-  audio.volume = 0.3; // moderate volume
+  audio.volume = 0.8; // moderate volume
 
   // Browsers block autoplay until the user interacts with the page.
   // Start playback on the first click, scroll, or keypress.
