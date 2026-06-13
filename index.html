@@ -5,9 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lake Urumia</title>
   <meta name="description" content="Experimental music and multimedia art – sound, video, performance">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#080706">
+
+  <!-- Social sharing: replace lakeurumia.example.com with the real domain when the site goes live -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Lake Urumia">
+  <meta property="og:description" content="Experimental music and multimedia art – sound, video, performance">
+  <meta property="og:image" content="https://lakeurumia.example.com/images/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='30' y='30' width='40' height='40' fill='none' stroke='%238b7355' stroke-width='9' transform='rotate(45 50 50)'/%3E%3C/svg%3E">
+
+  <!-- Apply saved theme before first paint to avoid a flash of the wrong theme -->
+  <script>
+    (function () {
+      var saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+      } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+
+  <link rel="preload" href="fonts/cormorant-garamond-300-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/inter-300-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="images/bg.webp" as="image" type="image/webp">
+  <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -19,9 +43,9 @@
   <header>
     <nav>
       <a href="#about">about</a>
-      
+      <a href="#work" id="nav-work" hidden>work</a>
       <a href="#listen">listen</a>
-      <a href="#gigs">In the past...</a>
+      <a href="#gigs">past</a>
       <a href="#contact">contact</a>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
         <span class="icon-sun">☀</span>
@@ -56,7 +80,14 @@
       </div>
     </section>
 
-   
+    <!-- Work: fills automatically from images in your-images/ (see your-images/README.txt) -->
+    <section id="work" hidden>
+      <div class="section-inner">
+        <h2>work</h2>
+        <div class="gallery"></div>
+      </div>
+    </section>
+
     <!-- Listen / Embeds -->
     <section id="listen">
       <div class="section-inner">
@@ -66,23 +97,26 @@
           <div class="embed-container bandcamp">
             <iframe
               style="border: 0; width: 100%; height: 120px;"
-              src="https://bandcamp.com/EmbeddedPlayer/track=3538866824/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/artwork=small/transparent=true/"
-              seamless>
+              src="https://bandcamp.com/EmbeddedPlayer/track=3538866824/size=large/bgcol=0a0a0a/linkcol=8b7355/tracklist=false/artwork=small/transparent=true/"
+              loading="lazy"
+              title="When, It by Lake Urumia (Bandcamp player)">
               <a href="https://lakeurumia.bandcamp.com/track/when-it">When, It by Lake Urumia</a>
             </iframe>
           </div>
           
-          <!-- Vimeo embed -->
-          <div class="embed-container vimeo">
-            <div class="video-wrapper">
-              <iframe
-                src="https://player.vimeo.com/video/1141894613?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479"
-                frameborder="0"
-                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                referrerpolicy="strict-origin-when-cross-origin"
-                allowfullscreen
-                title="Lake Urumia: Live at Forum Stadt Park, Graz.">
-              </iframe>
+          <!-- Vimeo loads only when the visitor presses play (saves ~1 MB of player JS on page load) -->
+          <div class="embed-container vimeo frame">
+            <div class="frame-inner">
+              <div class="video-wrapper">
+                <button id="video-facade" class="video-facade" type="button"
+                  data-src="https://player.vimeo.com/video/1141894613?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479"
+                  data-title="Lake Urumia: Live at Forum Stadt Park, Graz."
+                  aria-label="Play video: Lake Urumia live at Forum Stadtpark, Graz">
+                  <img src="images/video-poster.jpg" alt="" loading="lazy">
+                  <span class="play-icon" aria-hidden="true"></span>
+                  <span class="video-label">live at forum stadtpark, graz</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -171,6 +205,10 @@
             <li><span class="gig-venue">Sound design for experimental video art "We are Here" by Kia Sciarrone, premiered at Queer Stories</span><span class="gig-location">Filmmuseum, Vienna</span></li>
           </ul>
         </div>
+
+        <!-- Older years collapse into an expandable archive to keep the page scannable -->
+        <details class="cv-archive">
+          <summary>full archive 2015 – 2022</summary>
 
         <!-- 2022 -->
         <div class="cv-year">
@@ -282,6 +320,8 @@
           </ul>
         </div>
 
+        </details>
+
       </div>
     </section>
 
@@ -313,13 +353,12 @@
     <p>© 2026 Lake Urumia</p>
   </footer>
 
-  <!-- Background audio loop -->
-  <audio id="bg-audio" loop preload="auto">
+  <!-- Background audio: nothing downloads until the visitor presses play -->
+  <audio id="bg-audio" loop preload="none">
     <source src="audio/loop.mp3" type="audio/mpeg">
   </audio>
-  <button id="audio-toggle" class="audio-toggle" aria-label="Toggle audio">
-    <span class="audio-on">&#9835;</span>
-    <span class="audio-off">&#9835;</span>
+  <button id="audio-toggle" class="audio-toggle muted" aria-pressed="false" aria-label="Play background audio">
+    <span aria-hidden="true">&#9835;</span>
   </button>
 
   <script src="js/main.js"></script>

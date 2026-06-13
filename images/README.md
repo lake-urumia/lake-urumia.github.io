@@ -1,16 +1,19 @@
-# Placeholder
+# Site images
 
-Add your images here:
+Gallery images do NOT go here. Drop those into `../your-images/`
+(named `work-1.jpg`, `work-2.jpg`, ...), see `your-images/README.txt`.
 
-- portrait.jpg (about section, 3:4 ratio recommended)
-- work-01.jpg (gallery, 4:3 ratio)
-- work-02.jpg
-- work-03.jpg
-- work-04.jpg
+This folder holds the site's own assets:
 
-## Image Guidelines
+- `bg.jpg` / `bg.webp` – fixed background photo
+- `og-image.jpg` – social sharing preview (1200x630)
+- `video-poster.jpg` – click-to-play poster for the Vimeo embed
+- `press/` – full-resolution press photos (EPK downloads)
+- `press/web/` – auto-generated 1000px previews shown in the EPK grid
 
-- Max width: 1200px
-- Target size: 80-150KB each
+## Image guidelines
+
+- Max width: 1200-1600px for anything shown on a page
+- Target size: 80-400KB each
 - Strip EXIF metadata before uploading
 - Use Squoosh (squoosh.app) for compression

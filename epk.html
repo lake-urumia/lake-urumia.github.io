@@ -5,9 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EPK – Lake Urumia</title>
   <meta name="robots" content="noindex, nofollow">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#080706">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='30' y='30' width='40' height='40' fill='none' stroke='%238b7355' stroke-width='9' transform='rotate(45 50 50)'/%3E%3C/svg%3E">
+
+  <!-- Apply saved theme before first paint to avoid a flash of the wrong theme -->
+  <script>
+    (function () {
+      var saved = localStorage.getItem('theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+      } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/style.css">
   <style>
     /* EPK-specific styles */
@@ -264,7 +277,7 @@
         <!-- Press Photos -->
         <div class="epk-section">
           <h3>press photos</h3>
-          <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1.5rem;">Click any image to download the high-resolution file.</p>
+          <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1.5rem;">Use the download button under each image for the full-resolution file.</p>
           <div class="photo-grid" id="photoGrid">
             <!-- Photos are injected here — add your images to images/press/ -->
             <!-- Example card structure (repeated for each photo):
@@ -296,7 +309,7 @@
     
     <footer>
       <div class="berber-border"></div>
-      <p>© 2025 Lake Urumia</p>
+      <p>© 2026 Lake Urumia</p>
     </footer>
   </div>
   
@@ -315,14 +328,23 @@
       const msg  = document.querySelector('.no-photos-msg');
       if (!PRESS_PHOTOS.length) return; // show the helper message
       msg.style.display = 'none';
-      grid.innerHTML = PRESS_PHOTOS.map(p => `
+      // The grid shows lightweight previews from images/press/web/;
+      // the download button serves the full-resolution original.
+      grid.innerHTML = PRESS_PHOTOS.map(p => {
+        const preview = 'images/press/web/' + p.file.replace(/\.[^.]+$/, '.jpg');
+        return `
         <div class="photo-card">
-          <img src="images/press/${p.file}" alt="${p.label}" loading="lazy">
+          <div class="frame">
+            <span class="frame-inner">
+              <img src="${preview}" alt="${p.label}" loading="lazy">
+            </span>
+          </div>
           <div class="photo-card-footer">
             <span class="photo-card-name">${p.label}</span>
             <a class="photo-dl-btn" href="images/press/${p.file}" download>↓ download</a>
           </div>
-        </div>`).join('');
+        </div>`;
+      }).join('');
     }
     // ──────────────────────────────────────────────────────────
 
@@ -367,13 +389,6 @@
       target.innerHTML = `<a href="mailto:${email}">${email}</a>`;
     }
     
-    // Theme handling
-    const saved = localStorage.getItem('theme');
-    if (saved) {
-      document.documentElement.setAttribute('data-theme', saved);
-    } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-      document.documentElement.setAttribute('data-theme', 'light');
-    }
   </script>
 </body>
 </html>
